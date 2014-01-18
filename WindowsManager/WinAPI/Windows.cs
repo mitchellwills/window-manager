@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -119,6 +120,12 @@ namespace WindowsManager.WinAPI
         public bool IsMaximizedOn(SystemScreen screen)
         {
             return IsMaximized && ScreenManager.GetWindowScreen(this)==screen;
+        }
+
+        public override string ToString()
+        {
+            Process process = Process.GetProcessById(ProcessId);
+            return Title + " (" + process.ProcessName + ")";
         }
     }
 }
