@@ -73,8 +73,8 @@ namespace WindowsManager
                 {
                     var screen = ScreenManager.GetPointScreen(System.Windows.Forms.Cursor.Position);
 
-                    var allVisibleWindows = WindowManager.GetAllWindows().Where(window => window.IsVisible && window.Title.Length > 0 && window.Title != "Program Manager");
-                    var windowsOnScreen = allVisibleWindows.Where(window => ScreenManager.GetWindowScreen(window) == screen).OrderBy(window=>window.Title);
+                    var allVisibleWindows = WindowManager.GetAllWindows().Where(window => window.IsVisible && window.Title.Length > 0 && window.Title != "Program Manager" && !window.IsMinimized);
+                    var windowsOnScreen = allVisibleWindows.Where(window => ScreenManager.GetWindowScreen(window) == screen).OrderBy(window => window.Title);
 
                     SystemWindow active = WindowManager.GetForegroundWindow();
                     var next = windowsOnScreen.SkipWhile(window => window.HWND != active.HWND).Skip(1).FirstOrDefault();
@@ -83,6 +83,7 @@ namespace WindowsManager
                     else if (windowsOnScreen.Count() > 0)
                         windowsOnScreen.First().SetForeground();
                 };
+                Hide();
             };
         }
     }

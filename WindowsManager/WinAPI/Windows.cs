@@ -106,7 +106,7 @@ namespace WindowsManager.WinAPI
             get
             {
                 var cmd = GetPlacement().ShowCmd;
-                return (cmd == ShowWindowCommands.Minimize || cmd == ShowWindowCommands.ShowMinimized || cmd == ShowWindowCommands.ShowMinNoActive);
+                return (cmd == ShowWindowCommands.Maximize || cmd == ShowWindowCommands.ShowMaximized);
             }
         }
         public bool IsMinimized
@@ -114,7 +114,7 @@ namespace WindowsManager.WinAPI
             get
             {
                 var cmd = GetPlacement().ShowCmd;
-                return (cmd == ShowWindowCommands.Maximize || cmd == ShowWindowCommands.ShowMaximized);
+                return (cmd == ShowWindowCommands.Minimize || cmd == ShowWindowCommands.ShowMinimized || cmd == ShowWindowCommands.ShowMinNoActive);
             }
         }
         public bool IsMaximizedOn(SystemScreen screen)
