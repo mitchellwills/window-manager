@@ -41,7 +41,7 @@ namespace WindowsManager
                     throw new ArgumentException("Must specify at least one layout");
             }
 
-            public void On(ModifierKeys modifierKeys, Keys key)
+            public void On(ModifierKeys modifierKeys, Key key)
             {
                 Hotkey hotkey = layoutManager.hotkeyManager.CreateHotkey(modifierKeys, key);
                 hotkey.OnPressed += hotkey_OnPressed;

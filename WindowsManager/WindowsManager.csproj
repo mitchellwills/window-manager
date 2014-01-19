@@ -73,10 +73,12 @@
     <Compile Include="GeometryExtensions.cs" />
     <Compile Include="LayoutManager.cs" />
     <Compile Include="ScreenManager.cs" />
+    <Compile Include="WinAPI\Hook.cs" />
     <Compile Include="WinAPI\Hotkey.cs" />
     <Compile Include="WinAPI\Geometry.cs" />
     <Compile Include="WinAPI\WinAPINative.cs" />
     <Compile Include="WinAPI\Windows.cs" />
+    <Compile Include="WinAPI\WindowsMessages.cs" />
     <Compile Include="WindowLayout.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

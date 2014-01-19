@@ -289,12 +289,78 @@ namespace WindowsManager.WinAPI
 
     class HotkeyNative
     {
-        public const int WmHotKey = 0x0312;
-
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool RegisterHotKey(IntPtr hWnd, int id, ModifierKeys fsModifiers, Keys vk);
+        public static extern bool RegisterHotKey(IntPtr hWnd, int id, ModifierKeys fsModifiers, int vk);
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+    }
+
+    class HookNative
+    {
+        public delegate IntPtr HookProc(int code, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr SetWindowsHookEx(HookType code, HookProc func, IntPtr hInstance, int threadID);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
+    }
+    public enum HookType : int
+    {
+         WH_JOURNALRECORD = 0,  
+         WH_JOURNALPLAYBACK = 1,
+         WH_KEYBOARD = 2,
+         WH_GETMESSAGE = 3,
+         WH_CALLWNDPROC = 4,
+         WH_CBT = 5,
+         WH_SYSMSGFILTER = 6,
+         WH_MOUSE = 7,
+         WH_HARDWARE = 8,
+         WH_DEBUG = 9,
+         WH_SHELL = 10,
+         WH_FOREGROUNDIDLE = 11,
+         WH_CALLWNDPROCRET = 12,
+         WH_KEYBOARD_LL = 13,
+         WH_MOUSE_LL = 14
+    }
+    [StructLayout(LayoutKind.Sequential)]
+    public class KBDLLHOOKSTRUCT
+    {
+        public uint vkCode;
+        public uint scanCode;
+        public KBDLLHOOKSTRUCTFlags flags;
+        public uint time;
+        public UIntPtr dwExtraInfo;
+    }
+
+    [Flags]
+    public enum KBDLLHOOKSTRUCTFlags : uint
+    {
+        LLKHF_EXTENDED = 0x01,
+        LLKHF_INJECTED = 0x10,
+        LLKHF_ALTDOWN = 0x20,
+        LLKHF_UP = 0x80,
+    }
+    [Flags]
+    public enum MSLLHOOKSTRUCTKeyState : uint
+    {
+        MK_LBUTTON  = 0x0001,
+        MK_RBUTTON  = 0x0002,
+        MK_SHIFT = 0x0004,
+        MK_CONTROL = 0x0008,
+        MK_MBUTTON = 0x0010,
+        MK_XBUTTON1 = 0x0020,
+        MK_XBUTTON2 = 0x0040,
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct MSLLHOOKSTRUCT
+    {
+        public POINT pt;
+        public int mouseData; // be careful, this must be ints, not uints (was wrong before I changed it...). regards, cmew.
+        public int flags;
+        public int time;
+        public UIntPtr dwExtraInfo;
     }
 }

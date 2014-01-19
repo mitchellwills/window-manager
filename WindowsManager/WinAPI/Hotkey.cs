@@ -30,7 +30,7 @@ namespace WindowsManager.WinAPI
         {
             if (!handled)
             {
-                if (msg.message == HotkeyNative.WmHotKey)
+                if ((WM)msg.message == WM.HOTKEY)
                 {
                     HotkeyImpl hotkey;
                     int id = (int)msg.wParam;
@@ -44,9 +44,9 @@ namespace WindowsManager.WinAPI
         }
 
         private int nextId = 0;
-        public Hotkey CreateHotkey(ModifierKeys modifierKeys, Keys key)
+        public Hotkey CreateHotkey(ModifierKeys modifierKeys, Key key)
         {
-            if (key == Keys.None)
+            if (key == Key.None)
                 throw new ArgumentException("Cannot create a hotkey with no key");
             int id = nextId++;
             HotkeyImpl hotkey = new HotkeyImpl(this, id, modifierKeys, key);
@@ -56,7 +56,7 @@ namespace WindowsManager.WinAPI
 
         private bool RegisterHotkey(Hotkey hotkey)
         {
-            return HotkeyNative.RegisterHotKey(hWnd, hotkey.Id, hotkey.ModifierKeys, hotkey.Key); ;
+            return HotkeyNative.RegisterHotKey(hWnd, hotkey.Id, hotkey.ModifierKeys, KeyInterop.VirtualKeyFromKey(hotkey.Key)); ;
         }
         private bool UnregisterHotkey(Hotkey hotkey)
         {
@@ -71,11 +71,11 @@ namespace WindowsManager.WinAPI
 
             public int Id { get; private set; }
             public ModifierKeys ModifierKeys { get; private set; }
-            public Keys Key { get; private set; }
+            public Key Key { get; private set; }
             public event HotkeyPressed OnPressed;
 
 
-            public HotkeyImpl(HotkeyManager manager, int id, ModifierKeys modifierKeys, Keys key)
+            public HotkeyImpl(HotkeyManager manager, int id, ModifierKeys modifierKeys, Key key)
             {
                 this.manager = manager;
                 this.Id = id;
@@ -103,7 +103,7 @@ namespace WindowsManager.WinAPI
     {
         int Id { get; }
         ModifierKeys ModifierKeys { get; }
-        Keys Key { get; }
+        Key Key { get; }
         event HotkeyPressed OnPressed;
     }
 }
