@@ -23,18 +23,12 @@ namespace WindowsManager
     /// </summary>
     public partial class MainWindow : Window
     {
-        KeyboardHook keyboardHook;
         MouseHook mouseHook;
         public MainWindow()
         {
             InitializeComponent();
             Loaded += (s, e) =>
             {
-                keyboardHook = HookManager.RegisterLLKeyboardHook();
-                keyboardHook.OnKeyEvent += (bool keyup, Key vkCode, uint scanCode) =>
-                {
-                    Console.WriteLine(keyup+" - "+vkCode+" - "+scanCode);
-                };
                 mouseHook = HookManager.RegisterLLMouseHook();
                 mouseHook.OnMouseScroll += (Point pt, short scroll, bool horizontal) =>
                 {
@@ -54,6 +48,8 @@ namespace WindowsManager
                             windowsOnScreen.First().SetForeground();
                     }
                 };
+
+
                 HotkeyManager hotkeyManager = new HotkeyManager(this);
                 LayoutManager layoutManager = new LayoutManager(hotkeyManager);
                 layoutManager.Apply(WindowLayouts.SCREEN_TOP_LEFT).On(ModifierKeys.Windows | ModifierKeys.Alt,Key.NumPad7);
